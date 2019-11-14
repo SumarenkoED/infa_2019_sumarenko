@@ -20,11 +20,9 @@ tim = 0
 koeff = 1
 
 
-#создание класса шаров
-
-
 class Ball:
     global koeff
+    
     def __init__(self):
         self.x = rnd(60, 700)
         self.y = rnd(60, 700)
@@ -33,8 +31,8 @@ class Ball:
         self.r = rnd (30, 50)
         self.id = c.create_oval(self.x - self.r, self.y - self.r, 
                                 self.x + self.r, self.y + self.r, 
-                                fill = choice(colors), width = 0)
-        
+                                fill = choice(colors), width = 0
+                                )
 
     def reflection_ball(self):
         if self.y <= self.r or self.y >= 760 - self.r:
@@ -42,28 +40,23 @@ class Ball:
         if self.x <= self.r or self.x >= 760 - self.r:
             self.Vx *= -1
 
-      
     def move_ball(self):
         c.move(self.id, self.Vx, self.Vy)
         self.y += self.Vy
         self.x += self.Vx
 
-
     def inside_ball(self, xClick, yClick):
         return ((xClick - self.x) ** 2 + (yClick - self.y) ** 2) ** 0.5 < self.r
-    
 
     def delete_ball(self):
         self.x = -100
         self.y = -100
         c.delete(self.id)
- 
- 
-#создание класса прямоугольников
 
 
 class Rectangle:
     global koeff, ptr
+
     def __init__(self):
         self.x = rnd(70, 690)
         self.y = rnd(130, 530)
@@ -77,8 +70,8 @@ class Rectangle:
         m = choice(colors)
         self.id = c.create_rectangle(self.x, self.y, self.x + self.r, 
                                      self.y + 2 * self.r, fill = m, 
-                                     outline = m, width = 3)
-
+                                     outline = m, width = 3
+                                     )
 
     def move_rectangle(self):
         c.move(self.id, self.Vx, self.Vy)
@@ -87,19 +80,16 @@ class Rectangle:
         self.y += self.Vy
         self.x += self.Vx
 
-
     def inside_rectangle(self, xClick, yi):
         return (self.x < xClick) * (self.x + self.r > xClick) * (self.y < yi) * (self.y + 2 * self.r > yi) == 1
-
 
     def delete_rectangle(self):
         self.x = -100
         self.y = -100
         c.delete(self.id)
-        
+
 
 #обновление
-
 
 def updateScene():
     global ptr
@@ -110,10 +100,6 @@ def updateScene():
         d.move_rectangle() 
     ptr += 1
     root.after(updateTime, updateScene)
-
-
-#клик мыши
-
 
 def mouseClick(event):
     global k, LVL, tim, koeff
@@ -142,10 +128,6 @@ def mouseClick(event):
         c.create_text(500, 350, text = str(time.time() - start_time()), 
                       anchor = SE, fill = "black")
 
- 
-#самое важное
-
-
 def realise():
     global n, f, tim
     f = rnd(0,20)
@@ -156,12 +138,9 @@ def realise():
     for i in range(f):
         Rectangles.append(Rectangle())
 
-
 realise()
 
-
-#сначала цветные квадраты, потом тексты, данные обновляются в функции прокликивания
-
+#таблицы
 
 c.create_line(4, 4, 4, 757, 757, 757, 757, 4)
 c.create_rectangle(955, 5, 763, 95, fill = 'orange', outline = 'orange',
@@ -173,14 +152,11 @@ c.create_text(885, 30, text = "Игрок:",
 c.create_text(873, 125, text = "Ополчение ДНР:",
 anchor = SE, fill = "black")
 
-
 #авторизация пользователя
-
 
 e = Entry(root, width = 18)
 b = Button(text = "Представиться")
 l = Label(bg = 'black', fg = 'white', width = 20)
-
 
 def strToSortlist(event):
     global name
@@ -190,26 +166,23 @@ def strToSortlist(event):
     text_f.write(' ')
     l['text'] = ' '.join(name)
 
-
 b.bind('<Button-1>', strToSortlist)
 e.place(x = 772, y = 35)
 b.place(x = 830, y = 65)
 for i in range(20):
-    c.create_text(780, 160 + i * 20, text = i + 1,
+    c.create_text(780, 145 + i * 20, text = i + 1,
     anchor = SW, fill = "black")
 text_f = open('text.txt', 'r')
 i = 0
 for line in text_f:
     i += 1
-    c.create_text(790, 140 + i * 20, text = line, anchor = SW, fill = "black")
+    c.create_text(800, 140 + i * 20, text = line, anchor = SW, fill = "black")
 root.after(updateTime, updateScene)
 
 
 mainloop()
 
-
 #работа с файлом и вывод таблицы лучших игроков на экран
-
 
 text_f = open('text.txt', 'a')
 text_f.write(str(k))
